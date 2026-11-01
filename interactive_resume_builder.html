@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futuristic Pro CV Builder</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    screens: {
+                        'xs': '420px',
+                        '3xl': '1920px',
+                        '4xl': '2560px',
+                    },
+                    colors: {
+                        slate: {
+                            850: '#111827',
+                            950: '#0b0f19'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                        roboto: ['Roboto', 'sans-serif'],
+                    },
+                    animation: {
+                        'slide-in': 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { opacity: '0', transform: 'translateY(12px) scale(0.98)' },
+                            '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.4);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+
+        /* Eye-friendly subtle glassmorphism */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .glass-input {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease-in-out;
+        }
+        .glass-input:focus {
+            background: rgba(30, 41, 59, 0.7);
+            border-color: var(--accent-color, #6366f1);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
+            outline: none;
+        }
+
+        /* Dynamic Accent Color Default - Soft Indigo */
+        :root {
+            --accent-color: #6366f1;
+            --accent-soft: rgba(99, 102, 241, 0.12);
+            --resume-font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .accent-text { color: var(--accent-color); }
+        .accent-bg { background-color: var(--accent-color); }
+        .accent-border { border-color: var(--accent-color); }
+        
+        .entry-card {
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Resume Font Family Class Injection */
+        .resume-font-target {
+            font-family: var(--resume-font-family) !important;
+        }
+
+        /* Responsive Sheet Container Scaling for Extra Large Screens / TVs */
+        @media (min-width: 2560px) {
+            .resume-sheet {
+                max-width: 1000px !important;
+                min-height: 1300px !important;
+                font-size: 1.15rem !important;
+            }
+        }
+
+        /* Mode Badges */
+        .mode-badge {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 9999px;
+        }
+
+        /* Print Media Styles (STRICT PDF VISIBILITY & FIXES) */
+        @media print {
+            /* Force clean paper styling and unclip margins */
+            @page {
+                size: A4 portrait;
+                margin: 12mm 15mm;
+            }
+            body, html {
+                background: #ffffff !important;
+                color: #0f172a !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: auto !important;
+                overflow: visible !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                font-size: 10.5pt !important;
+                line-height: 1.6 !important;
+            }
+            .no-print, header, aside, .fixed, button, #panel-editor, .lg\:hidden {
+                display: none !important;
+            }
+            .print-container, main, #panel-preview, .preview-wrapper {
+                display: block !important;
+                position: static !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                background: #ffffff !important;
+                overflow: visible !important;
+                visibility: visible !important;
+                height: auto !important;
+            }
+            .resume-sheet {
+                box-shadow: none !important;
+                border: none !important;
+                width: 100% !important;
+                min-height: auto !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                background: #ffffff !important;
+                color: #0f172a !important;
+                border-radius: 0 !important;
+                visibility: visible !important;
+                overflow: visible !important;
+            }
+
+            /* CLEAN HEADER PRINT STYLING */
+            .resume-sheet header {
+                display: block !important;
+                margin-bottom: 1.5rem !important;
+                padding-bottom: 1rem !important;
+                border-bottom: 1.5px solid #cbd5e1 !important;
+            }
+
+            /* NAME & TITLE SPACING FIX */
+            .resume-sheet h1, 
+            #preview-name {
+                color: #0f172a !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                -webkit-text-fill-color: #0f172a !important;
+                font-size: 20pt !important;
+                line-height: 1.25 !important;
+                font-weight: 800 !important;
+                margin-bottom: 0.25rem !important;
+                letter-spacing: -0.01em !important;
+            }
+
+            #preview-title {
+                margin-bottom: 0.5rem !important;
+                font-size: 10.5pt !important;
+                line-height: 1.4 !important;
+                color: #334155 !important;
+            }
+
+            /* TEXT SPACING & PARAGRAPH LINE-HEIGHT FIXES */
+            .resume-sheet p, 
+            .resume-sheet span, 
+            .resume-sheet div, 
+            .resume-sheet li {
+                line-height: 1.6 !important;
+                letter-spacing: 0.01em !important;
+                color: #334155 !important;
+            }
+
+            /* CLEAN SECTION TITLES & GAP FIX */
+            .section-title {
+                font-size: 11pt !important;
+                margin-top: 1.25rem !important;
+                margin-bottom: 0.75rem !important;
+                padding-bottom: 0.3rem !important;
+                letter-spacing: 0.04em !important;
+                text-transform: uppercase !important;
+                color: #0f172a !important;
+                border-bottom: 1.5px solid #e2e8f0 !important;
+            }
+
+            .resume-sheet h4 {
+                font-size: 10.5pt !important;
+                line-height: 1.4 !important;
+                margin-bottom: 0.2rem !important;
+                color: #0f172a !important;
+                font-weight: 700 !important;
+            }
+
+            /* WORK EXPERIENCE & EDUCATION ITEMS SPACING */
+            #preview-experience > div {
+                margin-bottom: 1rem !important;
+                padding-left: 0.75rem !important;
+                border-left-color: #cbd5e1 !important;
+            }
+
+            #preview-education > div {
+                margin-bottom: 0.5rem !important;
+                padding: 0.6rem 0.85rem !important;
+                background-color: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+
+            /* SKILLS BADGES CLEAN PADDING */
+            #preview-skills {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 0.4rem !important;
+                margin-top: 0.4rem !important;
+            }
+
+            #preview-skills span {
+                background-color: #f1f5f9 !important;
+                color: #1e293b !important;
+                border: 1px solid #cbd5e1 !important;
+                font-weight: 600 !important;
+                padding: 0.25rem 0.55rem !important;
+                margin-bottom: 0.2rem !important;
+                display: inline-block !important;
+                font-size: 9pt !important;
+                border-radius: 4px !important;
+                -webkit-text-fill-color: #1e293b !important;
+            }
+
+            /* CLEAN PROFILE PHOTO FOR PRINT */
+            #preview-photo-container {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                width: 110px !important;
+                height: 110px !important;
+                min-width: 110px !important;
+                min-height: 110px !important;
+                border: 1.5px solid #94a3b8 !important;
+                border-radius: 12px !important;
+                overflow: hidden !important;
+                background-color: #f1f5f9 !important;
+                margin-right: 16px !important;
+                shrink: 0 !important;
+            }
+            #preview-photo-container.hidden {
+                display: none !important;
+            }
+            #preview-photo {
+                display: block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                object-position: top !important;
+            }
+
+            /* CLEAN BOXES LOOK */
+            .bg-slate-800\/40, .bg-slate-800\/80, .bg-slate-800, .bg-slate-900 {
+                background-color: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: none !important;
+            }
+
+            #cv-preview-sections:not(.hidden) {
+                display: block !important;
+            }
+            .accent-text {
+                color: #2563eb !important;
+                -webkit-text-fill-color: #2563eb !important;
+            }
+        }
+
+        /* Template Styles - CLEAN EDITIONS */
+        .template-cyber .resume-sheet {
+            background: #0f172a;
+            color: #f8fafc;
+        }
+        .template-cyber .section-title {
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .template-executive .resume-sheet {
+            background: #ffffff;
+            color: #0f172a;
+        }
+        .template-executive .section-title {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0f172a;
+            border-bottom: 1.5px solid #e2e8f0;
+        }
+        .template-executive .text-slate-300, .template-executive .text-slate-400 {
+            color: #334155 !important;
+        }
+        .template-executive .text-white {
+            color: #0f172a !important;
+        }
+        .template-executive .bg-slate-800\/40, .template-executive .bg-slate-800\/80 {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        .template-minimal .resume-sheet {
+            background: #ffffff;
+            color: #18181b;
+        }
+        .template-minimal .section-title {
+            font-weight: 700;
+            color: #18181b;
+            border-bottom: 1px solid #e4e4e7;
+        }
+        .template-minimal .text-slate-300, .template-minimal .text-slate-400 {
+            color: #4b5563 !important;
+        }
+        .template-minimal .text-white {
+            color: #111827 !important;
+        }
+        .template-minimal .bg-slate-800\/40, .template-minimal .bg-slate-800\/80 {
+            background-color: #f9fafb !important;
+            border-color: #f3f4f6 !important;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen antialiased selection:bg-indigo-500/30 selection:text-white">
+
+    <!-- Subtle Ambient Glow (Comfortable contrast) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0 no-print">
+        <div class="absolute -top-40 -left-40 w-[30rem] h-[30rem] bg-indigo-900/15 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/2 -right-40 w-[30rem] h-[30rem] bg-slate-800/20 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Main App Wrapper -->
+    <div class="relative z-10 flex flex-col h-screen overflow-hidden">
+
+        <!-- Header -->
+        <header class="glass-panel border-b border-slate-800/70 px-3 sm:px-6 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-2.5 no-print shrink-0">
+            <div class="flex items-center space-x-2.5">
+                <div class="p-1.5 sm:p-2 rounded-xl bg-slate-800 border border-slate-700/60 shadow-md">
+                    <i data-lucide="file-text" class="w-4 h-4 sm:w-5 sm:h-5 accent-text"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm sm:text-base md:text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        Nexus Studio <span class="text-[9px] sm:text-[10px] uppercase font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">CV & Resume Builder</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Toolbar Controls -->
+            <div class="flex items-center flex-wrap gap-1.5 sm:gap-3">
+                
+                <!-- Document Mode Switcher (Resume vs CV) -->
+                <div class="flex items-center bg-slate-900/90 p-0.5 sm:p-1 rounded-lg border border-indigo-500/30">
+                    <button id="btn-mode-resume" onclick="setDocumentMode('resume')" class="px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1">
+                        <i data-lucide="file-text" class="w-3 h-3"></i> Resume
+                    </button>
+                    <button id="btn-mode-cv" onclick="setDocumentMode('cv')" class="px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-semibold rounded-md transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1">
+                        <i data-lucide="book-open" class="w-3 h-3"></i> CV Mode
+                    </button>
+                </div>
+
+                <button onclick="loadSampleData()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700/80 text-slate-200 transition-all flex items-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 accent-text"></i>
+                    <span class="hidden xs:inline">Sample</span>
+                </button>
+
+                <button onclick="clearForm()" class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/90 hover:bg-slate-700/80 border border-slate-700/80 text-slate-300 hover:text-rose-400 transition-all flex items-center gap-1.5">
+                    <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                    <span class="hidden xs:inline">Clear</span>
+                </button>
+
+                <div class="h-4 w-px bg-slate-800 hidden md:block"></div>
+
+                <!-- Font Selector -->
+                <div class="hidden xl:flex items-center gap-1.5">
+                    <i data-lucide="type" class="w-3.5 h-3.5 text-slate-400"></i>
+                    <select id="fontSelect" onchange="changeFont(this.value)" class="bg-slate-800/90 text-slate-200 border border-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-indigo-500">
+                        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                        <option value="'Inter', sans-serif">Inter</option>
+                        <option value="'Outfit', sans-serif">Outfit</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                    </select>
+                </div>
+
+                <!-- Template Selector -->
+                <div class="flex items-center gap-1.5">
+                    <select id="templateSelect" onchange="changeTemplate(this.value)" class="bg-slate-800/90 text-slate-200 border border-slate-700 text-xs rounded-lg px-2 py-1.5 sm:px-2.5 focus:outline-none">
+                        <option value="template-cyber">Slate Dark</option>
+                        <option value="template-executive">Executive Light</option>
+                        <option value="template-minimal">Minimal Clean</option>
+                    </select>
+                </div>
+
+                <!-- Accent Color Picker (Eye-friendly palette) -->
+                <div class="hidden sm:flex items-center space-x-1 bg-slate-800/80 p-1 rounded-lg border border-slate-700/70">
+                    <button onclick="setAccentColor('#6366f1')" class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-indigo-500 hover:scale-110 transition-transform" title="Soft Indigo"></button>
+                    <button onclick="setAccentColor('#10b981')" class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-emerald-500 hover:scale-110 transition-transform" title="Soft Emerald"></button>
+                    <button onclick="setAccentColor('#06b6d4')" class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-cyan-500 hover:scale-110 transition-transform" title="Teal Cyan"></button>
+                    <button onclick="setAccentColor('#ec4899')" class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-pink-500 hover:scale-110 transition-transform" title="Soft Rose"></button>
+                    <button onclick="setAccentColor('#f59e0b')" class="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-amber-500 hover:scale-110 transition-transform" title="Warm Amber"></button>
+                </div>
+
+                <!-- PDF Export -->
+                <button onclick="exportPDF()" class="px-3 sm:px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition-all shadow-sm flex items-center gap-1.5 active:scale-95">
+                    <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+                    <span>Export PDF</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Tab Toggle (Only visible on mobile & small tablet portrait) -->
+        <div class="flex lg:hidden bg-slate-900 border-b border-slate-800 no-print">
+            <button id="tab-btn-edit" onclick="switchMobileTab('edit')" class="flex-1 py-2.5 text-xs font-bold text-center border-b-2 border-indigo-500 text-white transition-colors">Editor Form</button>
+            <button id="tab-btn-preview" onclick="switchMobileTab('preview')" class="flex-1 py-2.5 text-xs font-bold text-center border-b-2 border-transparent text-slate-400 transition-colors">Live Sheet Preview</button>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="flex-1 flex overflow-hidden">
+
+            <!-- LEFT PANEL: Editor -->
+            <aside id="panel-editor" class="w-full lg:w-[48%] xl:w-[42%] 2xl:w-[38%] 3xl:w-[32%] h-full overflow-y-auto p-3 sm:p-5 md:p-6 space-y-5 sm:space-y-6 glass-panel border-r border-slate-800/80 no-print">
+                <!-- Personal Info -->
+                <section class="space-y-3">
+                    <div class="flex items-center space-x-2 text-slate-300 pb-2 border-b border-slate-800">
+                        <i data-lucide="user" class="w-4 h-4 accent-text"></i>
+                        <h2 class="text-xs font-bold uppercase tracking-wider">Personal Information</h2>
+                    </div>
+
+                    <!-- Profile Photo Uploader Section -->
+                    <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 flex items-center gap-4">
+                        <div class="relative w-16 h-16 rounded-xl overflow-hidden bg-slate-800 border border-slate-700 shrink-0 shadow-inner">
+                            <img id="input-photo-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" alt="Profile Photo" class="w-full h-full object-cover object-top">
+                        </div>
+                        <div class="flex-1 space-y-1.5">
+                            <label class="block text-[11px] font-medium text-slate-300">Profile Photo (Head to Chest, 1x1)</label>
+                            <div class="flex items-center gap-2">
+                                <label class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 cursor-pointer transition-all flex items-center gap-1.5">
+                                    <i data-lucide="upload-cloud" class="w-3.5 h-3.5 accent-text"></i> Upload Image
+                                    <input type="file" id="input-photo-file" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
+                                </label>
+                                <button onclick="togglePhotoVisibility()" id="btn-toggle-photo" class="px-2 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded-lg border border-slate-700 transition-all">
+                                    <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Full Name</label>
+                            <input type="text" id="input-name" oninput="updateResume()" placeholder="e.g. Alex Mercer" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Professional Title</label>
+                            <input type="text" id="input-title" oninput="updateResume()" placeholder="e.g. Senior Software Engineer" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Email</label>
+                            <input type="email" id="input-email" oninput="updateResume()" placeholder="alex@domain.com" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Phone</label>
+                            <input type="text" id="input-phone" oninput="updateResume()" placeholder="+1 (555) 019-2834" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Location</label>
+                            <input type="text" id="input-location" oninput="updateResume()" placeholder="San Francisco, CA" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-slate-400 mb-1">Website / Portfolio</label>
+                            <input type="text" id="input-website" oninput="updateResume()" placeholder="linkedin.com/in/alex" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-medium text-slate-400 mb-1">Executive Summary</label>
+                        <textarea id="input-summary" oninput="updateResume()" rows="3" placeholder="Brief professional summary..." class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 resize-none"></textarea>
+                    </div>
+                </section>
+
+                <!-- Experience -->
+                <section class="space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center space-x-2 text-slate-300">
+                            <i data-lucide="briefcase" class="w-4 h-4 accent-text"></i>
+                            <h2 class="text-xs font-bold uppercase tracking-wider">Work Experience</h2>
+                        </div>
+                        <button onclick="addExperience()" class="px-2.5 py-1 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition-all flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Position
+                        </button>
+                    </div>
+
+                    <div id="experience-container" class="space-y-3"></div>
+                </section>
+
+                <!-- Education -->
+                <section class="space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center space-x-2 text-slate-300">
+                            <i data-lucide="graduation-cap" class="w-4 h-4 accent-text"></i>
+                            <h2 class="text-xs font-bold uppercase tracking-wider">Education</h2>
+                        </div>
+                        <button onclick="addEducation()" class="px-2.5 py-1 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition-all flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Degree
+                        </button>
+                    </div>
+
+                    <div id="education-container" class="space-y-3"></div>
+                </section>
+
+                <!-- Skills -->
+                <section class="space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                        <div class="flex items-center space-x-2 text-slate-300">
+                            <i data-lucide="code-2" class="w-4 h-4 accent-text"></i>
+                            <h2 class="text-xs font-bold uppercase tracking-wider">Skills & Technologies</h2>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-medium text-slate-400 mb-1">Skills (comma separated)</label>
+                        <textarea id="input-skills" oninput="updateResume()" rows="2" placeholder="React, Node.js, TypeScript, Cloud Architecture" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 resize-none"></textarea>
+                    </div>
+                </section>
+
+                <!-- CV SPECIFIC EXTRA SECTIONS (Hidden in Resume mode) -->
+                <div id="cv-only-fields" class="space-y-6 hidden">
+                    
+                    <!-- Publications & Research -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                            <div class="flex items-center space-x-2 text-slate-300">
+                                <i data-lucide="book-marked" class="w-4 h-4 accent-text"></i>
+                                <h2 class="text-xs font-bold uppercase tracking-wider">Publications & Research</h2>
+                            </div>
+                        </div>
+                        <textarea id="input-publications" oninput="updateResume()" rows="3" placeholder="e.g. Mercer, A. et al. (2024). Microservice Resiliency in Edge Computing. IEEE..." class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 resize-none"></textarea>
+                    </section>
+
+                    <!-- Certifications & Awards -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                            <div class="flex items-center space-x-2 text-slate-300">
+                                <i data-lucide="award" class="w-4 h-4 accent-text"></i>
+                                <h2 class="text-xs font-bold uppercase tracking-wider">Certifications & Honors</h2>
+                            </div>
+                        </div>
+                        <textarea id="input-certifications" oninput="updateResume()" rows="2" placeholder="e.g. AWS Certified Solutions Architect (2023), Outstanding Tech Innovation Award (2022)" class="w-full glass-input rounded-lg px-3 py-2 text-xs text-slate-100 placeholder-slate-600 resize-none"></textarea>
+
+                        <!-- Certificate Image & Verification Link Upload -->
+                        <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 space-y-2.5">
+                            <label class="block text-[11px] font-medium text-slate-300">Upload Certificate Image / Badge (Optional)</label>
+                            <div class="flex items-center gap-3">
+                                <label class="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 cursor-pointer transition-all flex items-center gap-1.5">
+                                    <i data-lucide="upload" class="w-3.5 h-3.5 accent-text"></i> Certificate Image
+                                    <input type="file" id="input-cert-file" accept="image/*" onchange="handleCertUpload(event)" class="hidden">
+                                </label>
+                                <div id="cert-filename" class="text-[11px] text-slate-400 truncate max-w-[150px]">No file chosen</div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-medium text-slate-400 mb-1">LinkedIn / Credly Credential URL</label>
+                                <input type="text" id="input-cert-url" oninput="updateResume()" placeholder="https://linkedin.com/in/alex/details/certifications or Credly link" class="w-full glass-input rounded-lg px-3 py-1.5 text-xs text-slate-100 placeholder-slate-600">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Languages & References -->
+                    <section class="space-y-3">
+                        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+                            <div class="flex items-center space-x-2 text-slate-300">
+                                <i data-lucide="languages" class="w-4 h-4 accent-text"></i>
+                                <h2 class="text-xs font-bold uppercase tracking-wider">Languages & References</h2>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="input-languages" oninput="updateResume()" placeholder="English (Native), Tagalog (Fluent)" class="glass-input rounded-lg px-3 py-2 text-xs text-slate-100">
+                            <input type="text" id="input-references" oninput="updateResume()" placeholder="Available upon request" class="glass-input rounded-lg px-3 py-2 text-xs text-slate-100">
+                        </div>
+                    </section>
+
+                </div>
+            </aside>
+
+            <!-- RIGHT PANEL: Live Preview -->
+            <main id="panel-preview" class="hidden lg:flex w-full lg:w-[52%] xl:w-[58%] 2xl:w-[62%] 3xl:w-[68%] h-full bg-slate-950 p-3 sm:p-6 md:p-8 2xl:p-12 overflow-y-auto justify-center items-start preview-wrapper">
+                
+                <div id="resume-sheet" class="resume-sheet template-cyber resume-font-target w-full max-w-[800px] 2xl:max-w-[900px] 3xl:max-w-[1000px] min-h-[1050px] shadow-2xl rounded-xl p-6 sm:p-10 md:p-12 transition-all duration-300 border border-slate-800/80 my-0 lg:my-auto print-container">
+                    
+                    <!-- Clean Header Layout -->
+                    <header class="mb-6 sm:mb-8 border-b border-slate-800/60 pb-5 sm:pb-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-6">
+                            <!-- Left: Name & Title -->
+                            <div class="flex items-center gap-3.5 sm:gap-5">
+                                <!-- Photo Container -->
+                                <div id="preview-photo-container" class="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl overflow-hidden border-2 accent-border shadow-md shrink-0 bg-slate-800">
+                                    <img id="preview-photo" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300" alt="Profile" class="w-full h-full object-cover object-top">
+                                </div>
+
+                                <div class="space-y-1">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <h1 id="preview-name" class="text-xl sm:text-2xl md:text-3xl 2xl:text-4xl font-extrabold tracking-tight text-white leading-tight">Alexander Mercer</h1>
+                                        <span id="preview-doc-badge" class="mode-badge bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">RESUME</span>
+                                    </div>
+                                    <p id="preview-title" class="text-xs sm:text-sm md:text-base font-semibold accent-text tracking-wide">Principal Software Architect</p>
+                                </div>
+                            </div>
+
+                            <!-- Contact Info with Clean Spacing -->
+                            <div class="text-[11px] sm:text-xs space-y-1 sm:space-y-1.5 text-slate-300 shrink-0 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-slate-800/60">
+                                <div id="preview-email-container" class="flex items-center gap-2">
+                                    <i data-lucide="mail" class="w-3.5 h-3.5 accent-text shrink-0"></i>
+                                    <span id="preview-email">alex@domain.com</span>
+                                </div>
+                                <div id="preview-phone-container" class="flex items-center gap-2">
+                                    <i data-lucide="phone" class="w-3.5 h-3.5 accent-text shrink-0"></i>
+                                    <span id="preview-phone">+1 (555) 019-2834</span>
+                                </div>
+                                <div id="preview-location-container" class="flex items-center gap-2">
+                                    <i data-lucide="map-pin" class="w-3.5 h-3.5 accent-text shrink-0"></i>
+                                    <span id="preview-location">San Francisco, CA</span>
+                                </div>
+                                <div id="preview-website-container" class="flex items-center gap-2">
+                                    <i data-lucide="globe" class="w-3.5 h-3.5 accent-text shrink-0"></i>
+                                    <span id="preview-website">linkedin.com/in/alex</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Clean Executive Summary -->
+                        <div id="preview-summary-container" class="mt-4 sm:mt-5 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            <p id="preview-summary">Passionate Cloud Architect & Full-Stack Developer experienced in building high-scalability web applications and distributed microservices.</p>
+                        </div>
+                    </header>
+
+                    <!-- Content Sections with Balanced Gaps -->
+                    <div class="space-y-6">
+                        <!-- Work Experience -->
+                        <section id="preview-exp-section">
+                            <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-4 flex items-center gap-2">
+                                <i data-lucide="briefcase" class="w-4 h-4 accent-text"></i> Professional Experience
+                            </h3>
+                            <div id="preview-experience" class="space-y-4"></div>
+                        </section>
+
+                        <!-- Education -->
+                        <section id="preview-edu-section">
+                            <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-4 flex items-center gap-2">
+                                <i data-lucide="graduation-cap" class="w-4 h-4 accent-text"></i> Education
+                            </h3>
+                            <div id="preview-education" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5"></div>
+                        </section>
+
+                        <!-- Skills -->
+                        <section id="preview-skills-section">
+                            <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-3 flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-4 h-4 accent-text"></i> Skills & Expertise
+                            </h3>
+                            <div id="preview-skills" class="flex flex-wrap gap-2"></div>
+                        </section>
+
+                        <!-- CV SPECIFIC SECTIONS ON PREVIEW -->
+                        <div id="cv-preview-sections" class="space-y-6 hidden">
+                            <!-- Publications -->
+                            <section id="preview-publications-section">
+                                <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-2.5 flex items-center gap-2">
+                                    <i data-lucide="book-marked" class="w-4 h-4 accent-text"></i> Publications & Research
+                                </h3>
+                                <p id="preview-publications" class="text-xs text-slate-300 leading-relaxed whitespace-pre-line"></p>
+                            </section>
+
+                            <!-- Certifications -->
+                            <section id="preview-certifications-section">
+                                <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-2.5 flex items-center gap-2">
+                                    <i data-lucide="award" class="w-4 h-4 accent-text"></i> Certifications & Honors
+                                </h3>
+                                <p id="preview-certifications" class="text-xs text-slate-300 leading-relaxed whitespace-pre-line"></p>
+
+                                <!-- Certificate Preview Image & Verification Link -->
+                                <div id="preview-cert-media" class="mt-3 hidden space-y-2">
+                                    <div id="preview-cert-img-wrapper" class="hidden">
+                                        <img id="preview-cert-img" src="" alt="Certificate Preview" class="max-h-36 rounded-lg border border-slate-700/80 object-contain bg-slate-900/50 p-1">
+                                    </div>
+                                    <div id="preview-cert-url-wrapper" class="hidden text-xs">
+                                        <a id="preview-cert-url" href="#" target="_blank" rel="noopener noreferrer" class="accent-text font-medium underline flex items-center gap-1">
+                                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Verify Credential (LinkedIn / Credly)
+                                        </a>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Languages & References -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <section id="preview-languages-section">
+                                    <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-2 flex items-center gap-2">
+                                        <i data-lucide="languages" class="w-4 h-4 accent-text"></i> Languages
+                                    </h3>
+                                    <p id="preview-languages" class="text-xs text-slate-300 leading-relaxed"></p>
+                                </section>
+                                <section id="preview-references-section">
+                                    <h3 class="section-title text-xs sm:text-sm font-bold pb-1.5 mb-2 flex items-center gap-2">
+                                        <i data-lucide="users" class="w-4 h-4 accent-text"></i> References
+                                    </h3>
+                                    <p id="preview-references" class="text-xs text-slate-300 leading-relaxed"></p>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Application JavaScript -->
+    <script>
+        let documentMode = 'resume'; // 'resume' or 'cv'
+        let experiences = [];
+        let educations = [];
+        let isPhotoVisible = true;
+        let profilePhotoUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300";
+        let certPhotoUrl = "";
+
+        const sampleData = {
+            name: "Alexander Mercer",
+            title: "Principal Software Architect",
+            email: "alex.mercer@domain.com",
+            phone: "+1 (415) 890-2311",
+            location: "San Francisco, CA",
+            website: "linkedin.com/in/alexmercer-dev",
+            summary: "Innovative Full-Stack & Cloud Architect with 8+ years of experience delivering scalable microservices, web applications, and developer tools. Proven track record of leading software engineering teams and optimizing cloud infrastructure.",
+            skills: "React, Next.js, Node.js, TypeScript, Python, GraphQL, AWS, Docker, Kubernetes, Tailwind CSS, PostgreSQL, Redis",
+            publications: "Mercer, A., & Zhang, L. (2024). Scalable Microservices Architecture for Distributed Systems. Journal of Cloud Computing Systems, 12(4), 45-58.\nMercer, A. (2022). Optimizing Frontend Performance at Enterprise Scale. TechCon Proceedings.",
+            certifications: "• AWS Certified Solutions Architect - Professional (2023)\n• Certified Kubernetes Administrator (CKA)\n• 1st Place - National Hackathon Innovator Award (2022)",
+            certUrl: "https://www.linkedin.com/in/alex/details/certifications",
+            languages: "English (Native), Spanish (Professional Working), Tagalog (Conversational)",
+            references: "Available upon request (or Prof. Dr. E. Vance, Stanford CS Dept.)",
+            experiences: [
+                {
+                    id: 1,
+                    role: "Lead Systems Architect",
+                    company: "Aether Systems",
+                    period: "2022 - Present",
+                    description: "Engineered real-time analytics engine handling high throughput traffic. Optimized cloud architecture reducing deployment overhead by 35%."
+                },
+                {
+                    id: 2,
+                    role: "Senior Full-Stack Engineer",
+                    company: "Vortex Software",
+                    period: "2019 - 2022",
+                    description: "Architected micro-frontend systems using React and Webpack. Mentored junior engineers and led code refactoring initiatives."
+                }
+            ],
+            educations: [
+                {
+                    id: 1,
+                    degree: "B.S. Computer Science",
+                    school: "University of California, Berkeley",
+                    period: "2015 - 2019"
+                },
+                {
+                    id: 2,
+                    degree: "M.S. Software Engineering",
+                    school: "Stanford University",
+                    period: "2019 - 2021"
+                }
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadSampleData();
+        });
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePhotoUrl = e.target.result;
+                    document.getElementById('input-photo-preview').src = profilePhotoUrl;
+                    document.getElementById('preview-photo').src = profilePhotoUrl;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleCertUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    certPhotoUrl = e.target.result;
+                    document.getElementById('cert-filename').innerText = file.name;
+                    updateResume();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function togglePhotoVisibility() {
+            isPhotoVisible = !isPhotoVisible;
+            const photoContainer = document.getElementById('preview-photo-container');
+            const btn = document.getElementById('btn-toggle-photo');
+            
+            if (isPhotoVisible) {
+                photoContainer.classList.remove('hidden');
+                btn.classList.remove('opacity-50');
+            } else {
+                photoContainer.classList.add('hidden');
+                btn.classList.add('opacity-50');
+            }
+        }
+
+        function setDocumentMode(mode) {
+            documentMode = mode;
+            const btnResume = document.getElementById('btn-mode-resume');
+            const btnCv = document.getElementById('btn-mode-cv');
+            const cvFields = document.getElementById('cv-only-fields');
+            const cvPreviewSections = document.getElementById('cv-preview-sections');
+            const badge = document.getElementById('preview-doc-badge');
+
+            if (mode === 'cv') {
+                btnCv.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1";
+                btnResume.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1";
+                cvFields.classList.remove('hidden');
+                cvPreviewSections.classList.remove('hidden');
+                badge.innerText = "CURRICULUM VITAE";
+                badge.className = "mode-badge bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+            } else {
+                btnResume.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition-all bg-indigo-600 text-white shadow-sm flex items-center gap-1";
+                btnCv.className = "px-2.5 py-1 text-xs font-semibold rounded-md transition-all text-slate-400 hover:text-slate-200 flex items-center gap-1";
+                cvFields.classList.add('hidden');
+                cvPreviewSections.classList.add('hidden');
+                badge.innerText = "RESUME";
+                badge.className = "mode-badge bg-indigo-500/20 text-indigo-400 border border-indigo-500/30";
+            }
+            updateResume();
+        }
+
+        function loadSampleData() {
+            document.getElementById('input-name').value = sampleData.name;
+            document.getElementById('input-title').value = sampleData.title;
+            document.getElementById('input-email').value = sampleData.email;
+            document.getElementById('input-phone').value = sampleData.phone;
+            document.getElementById('input-location').value = sampleData.location;
+            document.getElementById('input-website').value = sampleData.website;
+            document.getElementById('input-summary').value = sampleData.summary;
+            document.getElementById('input-skills').value = sampleData.skills;
+            
+            // CV extra fields
+            document.getElementById('input-publications').value = sampleData.publications;
+            document.getElementById('input-certifications').value = sampleData.certifications;
+            document.getElementById('input-cert-url').value = sampleData.certUrl || '';
+            document.getElementById('input-languages').value = sampleData.languages;
+            document.getElementById('input-references').value = sampleData.references;
+
+            experiences = JSON.parse(JSON.stringify(sampleData.experiences));
+            educations = JSON.parse(JSON.stringify(sampleData.educations));
+
+            renderExperienceInputs();
+            renderEducationInputs();
+            updateResume();
+        }
+
+        function clearForm() {
+            document.getElementById('input-name').value = '';
+            document.getElementById('input-title').value = '';
+            document.getElementById('input-email').value = '';
+            document.getElementById('input-phone').value = '';
+            document.getElementById('input-location').value = '';
+            document.getElementById('input-website').value = '';
+            document.getElementById('input-summary').value = '';
+            document.getElementById('input-skills').value = '';
+            document.getElementById('input-publications').value = '';
+            document.getElementById('input-certifications').value = '';
+            document.getElementById('input-cert-url').value = '';
+            document.getElementById('cert-filename').innerText = 'No file chosen';
+            certPhotoUrl = "";
+            document.getElementById('input-languages').value = '';
+            document.getElementById('input-references').value = '';
+
+            experiences = [];
+            educations = [];
+
+            renderExperienceInputs();
+            renderEducationInputs();
+            updateResume();
+        }
+
+        function updateResume() {
+            // Header & Contact
+            const nameVal = document.getElementById('input-name').value;
+            const titleVal = document.getElementById('input-title').value;
+            
+            // Explicitly sync Name & Photo with direct DOM updates
+            const nameEl = document.getElementById('preview-name');
+            const finalName = nameVal && nameVal.trim() !== '' ? nameVal : 'Alexander Mercer';
+            nameEl.textContent = finalName;
+            nameEl.innerText = finalName;
+
+            const photoEl = document.getElementById('preview-photo');
+            const inputPhotoPreview = document.getElementById('input-photo-preview');
+            if (photoEl && profilePhotoUrl) {
+                photoEl.src = profilePhotoUrl;
+            }
+            if (inputPhotoPreview && profilePhotoUrl) {
+                inputPhotoPreview.src = profilePhotoUrl;
+            }
+
+            document.getElementById('preview-title').innerText = titleVal.trim() !== '' ? titleVal : 'Professional Title';
+
+            const emailVal = document.getElementById('input-email').value;
+            const phoneVal = document.getElementById('input-phone').value;
+            const locationVal = document.getElementById('input-location').value;
+            const websiteVal = document.getElementById('input-website').value;
+            const summaryVal = document.getElementById('input-summary').value;
+
+            document.getElementById('preview-email').innerText = emailVal || 'email@domain.com';
+            document.getElementById('preview-phone').innerText = phoneVal || '+1 (555) 000-0000';
+            document.getElementById('preview-location').innerText = locationVal || 'City, Country';
+            document.getElementById('preview-website').innerText = websiteVal || 'portfolio.com';
+            document.getElementById('preview-summary').innerText = summaryVal || 'Add your professional summary here...';
+
+            // Work Experience rendering
+            const expContainer = document.getElementById('preview-experience');
+            expContainer.innerHTML = '';
+            if (experiences.length === 0) {
+                expContainer.innerHTML = '<p class="text-xs text-slate-400 italic">No work experience added yet.</p>';
+            } else {
+                experiences.forEach(exp => {
+                    const div = document.createElement('div');
+                    div.className = 'border-l-2 border-slate-700/80 pl-4 py-1 space-y-1.5 mb-4';
+                    div.innerHTML = `
+                        <div class="flex justify-between items-baseline flex-wrap gap-1 mb-1">
+                            <h4 class="text-xs font-bold text-white tracking-wide">${exp.role || 'Job Title'} <span class="accent-text font-semibold">@ ${exp.company || 'Company'}</span></h4>
+                            <span class="text-[11px] text-slate-400 font-medium">${exp.period || ''}</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed whitespace-pre-line">${exp.description || ''}</p>
+                    `;
+                    expContainer.appendChild(div);
+                });
+            }
+
+            // Education rendering
+            const eduContainer = document.getElementById('preview-education');
+            eduContainer.innerHTML = '';
+            if (educations.length === 0) {
+                eduContainer.innerHTML = '<p class="text-xs text-slate-400 italic">No education added yet.</p>';
+            } else {
+                educations.forEach(edu => {
+                    const div = document.createElement('div');
+                    div.className = 'bg-slate-800/40 p-3 rounded-lg border border-slate-800 space-y-1';
+                    div.innerHTML = `
+                        <h4 class="text-xs font-bold text-white tracking-wide">${edu.degree || 'Degree / Major'}</h4>
+                        <p class="text-xs text-slate-300 font-medium">${edu.school || 'School / University'}</p>
+                        <span class="text-[11px] text-slate-400 block pt-0.5">${edu.period || ''}</span>
+                    `;
+                    eduContainer.appendChild(div);
+                });
+            }
+
+            // Skills rendering
+            const skillsVal = document.getElementById('input-skills').value;
+            const skillsContainer = document.getElementById('preview-skills');
+            skillsContainer.innerHTML = '';
+            if (skillsVal.trim() === '') {
+                skillsContainer.innerHTML = '<span class="text-xs text-slate-400 italic">No skills added.</span>';
+            } else {
+                const skillList = skillsVal.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                skillList.forEach(skill => {
+                    const span = document.createElement('span');
+                    span.className = 'px-2.5 py-1 text-xs rounded-md bg-slate-800 border border-slate-700 text-slate-200 font-medium';
+                    span.innerText = skill;
+                    skillsContainer.appendChild(span);
+                });
+            }
+
+            // CV Extra Fields rendering (Always updated so data is present in DOM for print)
+            const pubText = document.getElementById('input-publications').value || 'None specified.';
+            const certText = document.getElementById('input-certifications').value || 'None specified.';
+            const certUrlVal = document.getElementById('input-cert-url').value.trim();
+            const langText = document.getElementById('input-languages').value || 'Not specified.';
+            const refText = document.getElementById('input-references').value || 'Available upon request.';
+
+            document.getElementById('preview-publications').innerText = pubText;
+            document.getElementById('preview-certifications').innerText = certText;
+
+            // Render Certificate Image & Link Verification
+            const certMediaBox = document.getElementById('preview-cert-media');
+            const certImgWrapper = document.getElementById('preview-cert-img-wrapper');
+            const certImgEl = document.getElementById('preview-cert-img');
+            const certUrlWrapper = document.getElementById('preview-cert-url-wrapper');
+            const certUrlEl = document.getElementById('preview-cert-url');
+
+            let hasCertMedia = false;
+
+            if (certPhotoUrl) {
+                certImgEl.src = certPhotoUrl;
+                certImgWrapper.classList.remove('hidden');
+                hasCertMedia = true;
+            } else {
+                certImgWrapper.classList.add('hidden');
+            }
+
+            if (certUrlVal) {
+                certUrlEl.href = certUrlVal.startsWith('http') ? certUrlVal : 'https://' + certUrlVal;
+                certUrlWrapper.classList.remove('hidden');
+                hasCertMedia = true;
+            } else {
+                certUrlWrapper.classList.add('hidden');
+            }
+
+            if (hasCertMedia) {
+                certMediaBox.classList.remove('hidden');
+            } else {
+                certMediaBox.classList.add('hidden');
+            }
+
+            document.getElementById('preview-languages').innerText = langText;
+            document.getElementById('preview-references').innerText = refText;
+
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function renderExperienceInputs() {
+            const container = document.getElementById('experience-container');
+            container.innerHTML = '';
+
+            experiences.forEach((exp, index) => {
+                const card = document.createElement('div');
+                card.className = 'entry-card glass-input p-3 rounded-lg space-y-2 border border-slate-800 relative';
+                card.innerHTML = `
+                    <button onclick="removeExperience(${index})" class="absolute top-2 right-2 text-slate-500 hover:text-rose-400 p-1 rounded transition-colors" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" value="${exp.role}" oninput="updateExperience(${index}, 'role', this.value)" placeholder="Job Title" class="glass-input rounded px-2.5 py-1.5 text-xs text-slate-100">
+                        <input type="text" value="${exp.company}" oninput="updateExperience(${index}, 'company', this.value)" placeholder="Company" class="glass-input rounded px-2.5 py-1.5 text-xs text-slate-100">
+                    </div>
+                    <input type="text" value="${exp.period}" oninput="updateExperience(${index}, 'period', this.value)" placeholder="Period (e.g. 2021 - Present)" class="w-full glass-input rounded px-2.5 py-1.5 text-xs text-slate-100">
+                    <textarea oninput="updateExperience(${index}, 'description', this.value)" rows="2" placeholder="Responsibilities..." class="w-full glass-input rounded px-2.5 py-1.5 text-xs text-slate-100 resize-none">${exp.description}</textarea>
+                `;
+                container.appendChild(card);
+            });
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function renderEducationInputs() {
+            const container = document.getElementById('education-container');
+            container.innerHTML = '';
+
+            educations.forEach((edu, index) => {
+                const card = document.createElement('div');
+                card.className = 'entry-card glass-input p-3 rounded-lg space-y-2 border border-slate-800 relative';
+                card.innerHTML = `
+                    <button onclick="removeEducation(${index})" class="absolute top-2 right-2 text-slate-500 hover:text-rose-400 p-1 rounded transition-colors" title="Delete">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" value="${edu.degree}" oninput="updateEducation(${index}, 'degree', this.value)" placeholder="Degree" class="glass-input rounded px-2.5 py-1.5 text-xs text-slate-100">
+                        <input type="text" value="${edu.school}" oninput="updateEducation(${index}, 'school', this.value)" placeholder="Institution" class="glass-input rounded px-2.5 py-1.5 text-xs text-slate-100">
+                    </div>
+                    <input type="text" value="${edu.period}" oninput="updateEducation(${index}, 'period', this.value)" placeholder="Year / Period" class="w-full glass-input rounded px-2.5 py-1.5 text-xs text-slate-100">
+                `;
+                container.appendChild(card);
+            });
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        }
+
+        function changeTemplate(templateName) {
+            const sheet = document.getElementById('resume-sheet');
+            sheet.className = `resume-sheet ${templateName} resume-font-target w-full max-w-[800px] min-h-[1050px] shadow-xl rounded-xl p-8 sm:p-12 transition-all duration-300 border border-slate-800/80 my-auto print-container`;
+        }
+
+        function changeFont(fontFamily) {
+            document.documentElement.style.setProperty('--resume-font-family', fontFamily);
+        }
+
+        function setAccentColor(color) {
+            document.documentElement.style.setProperty('--accent-color', color);
+        }
+
+        function switchMobileTab(tab) {
+            const editorPanel = document.getElementById('panel-editor');
+            const previewPanel = document.getElementById('panel-preview');
+            const editBtn = document.getElementById('tab-btn-edit');
+            const previewBtn = document.getElementById('tab-btn-preview');
+
+            if (tab === 'edit') {
+                editorPanel.classList.remove('hidden');
+                previewPanel.classList.add('hidden');
+                editBtn.classList.add('border-indigo-500', 'text-white');
+                editBtn.classList.remove('border-transparent', 'text-slate-400');
+                previewBtn.classList.remove('border-indigo-500', 'text-white');
+                previewBtn.classList.add('border-transparent', 'text-slate-400');
+            } else {
+                editorPanel.classList.add('hidden');
+                previewPanel.classList.remove('hidden');
+                previewPanel.classList.add('flex');
+                previewBtn.classList.add('border-indigo-500', 'text-white');
+                previewBtn.classList.remove('border-transparent', 'text-slate-400');
+                editBtn.classList.remove('border-indigo-500', 'text-white');
+                editBtn.classList.add('border-transparent', 'text-slate-400');
+            }
+        }
+
+        function exportPDF() {
+            // Force update before printing to guarantee image and full name DOM elements are synced
+            updateResume();
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+    </script>
+</body>
+</html>
